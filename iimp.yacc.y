@@ -1,17 +1,18 @@
 %{
+/* author BOUTET Clément */
   #include <stdio.h>
   #include <stdlib.h>
   int yylex();
   int yyerror();
 %}
+
 %union{
   int number;
   char * string;
 }
 
 %start START
-%token <string> Af Sk If Th El Wh Do Se Pl Mo Mu
-%token <number> Po Pf
+%token <string> Af Sk If Th El Wh Do Se Pl Mo Mu Po Pf
 %token <string> V
 %token <number> I
 %left Af Mu
@@ -23,7 +24,7 @@
 START : C
 C : V Af E {printf("%s %s ", $1, $2);}
   | Sk {printf("%s ", $1);}
-  | Po C Pf
+  | Po C Pf {printf("%s %s",$1 , $3);}
   | If E Th C El C {printf("%s%s%s ", $1, $3, $5);}
   | Wh E Do C {printf("%s%s ", $1, $3);}
   | C Se C {printf("%s ",$2);}
@@ -32,7 +33,7 @@ E : E Pl T {printf("%s ",$2);}
   | E Mo T {printf("%s ",$2);}
   | T
   ;
-T : T Mu F {printf("* ");}
+T : T Mu F {printf("%s ",$2);}
   | F
   ;
 F : Po E Pf
