@@ -22,8 +22,8 @@
 
 %left Af Mu
 %left Pl Mo
-%left Do El
-%left Se
+%left El
+%left Se Do
 
 %type <noeud> C E T F
 
@@ -32,8 +32,11 @@ START : C {print_tree($1);}
 C : V Af E { Noeud *fils_gauche = create_noeud(NULL,NULL,$1);
   $$ = create_noeud(fils_gauche, $3, $2);}
   | Sk {$$ = create_noeud(NULL, NULL, $1);}
-  | Po C Pf {$$ = create_noeud(NULL, $2, NULL);}
-  | If E Th C El C {$$ = create_noeud(NULL, NULL, NULL);}
+  | Po C Pf {
+    $$ = $2;}
+  | If E Th C El C {
+    Noeud *fils_droit = create_noeud($4, $6, "");
+    $$ = create_noeud($2, fils_droit, $1);}
   | Wh E Do C {$$ = create_noeud($2, $4, $1);}
   | C Se C {$$ = create_noeud($1, $3, $2);}
   ;
@@ -44,7 +47,7 @@ E : E Pl T {$$ = create_noeud($1, $3 , $2);}
 T : T Mu F {$$ = create_noeud($1, $3, $2);}
   | F
   ;
-F : Po E Pf {$$ = create_noeud(NULL, NULL, NULL);}
+F : Po E Pf {$$ =$2;}
   | I {char *tmp = malloc(sizeof(char)); sprintf(tmp,"%d",$1);
     $$ = create_noeud(NULL,NULL,tmp);}
   | V {$$ = create_noeud($$,NULL,$1);}
