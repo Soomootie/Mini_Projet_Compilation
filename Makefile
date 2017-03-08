@@ -5,7 +5,7 @@ LFLAGS = -lfl
 # YACC FLAGS
 YFLAGS = -d --report=all
 # .H FILES
-INCLUDE = .include/
+INC_DIR = include
 
 run:
 ifneq ($(F),)
@@ -29,7 +29,7 @@ endif
 	@mv $(F).c $@
 	@echo -e "\033[00m"
 
-$(F): $(F).yacc.o $(F).lex.o
+$(F): $(F).yacc.o $(F).lex.o abiimp.o
 	@echo -e "\033[32;02mCompiling output file:" $^ "\033[00m"
 	@echo -e "\033[32;02mOutput file:" $@ "\033[00m\033[34;01m"
 	@$(CC) -o $@ $^
