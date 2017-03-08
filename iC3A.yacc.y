@@ -19,10 +19,12 @@
 %%
 
 START : C {printf("%s ",$1);}
-C : Et Sep Op Sep A Sep A Sep Dest C
-  |
+C :
+  | Et Sep Op Sep A Sep A Sep D C
 A :
   | Arg
+  | Dest
+D :
   | Dest
   ;
 
