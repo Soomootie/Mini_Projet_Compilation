@@ -4,9 +4,9 @@
   #include <stdlib.h>
   #include <string.h>
   #include "include/abiimp.h"
+  #include "include/environ.h"
   int yylex();
   int yyerror();
-
 %}
 
 %union{
@@ -28,7 +28,9 @@
 %type <noeud> C E T F
 
 %%
-START : C {print_tree($1);}
+START : C {/*print_tree($1);*//* On affiche l'arbre de syntaxe abstraite. */
+            ENV e = Envalloc(); int err = env_tree($1, &e); ecrire_env(e);
+        /*err = affect(*e, $1->gauche->data, 10);err = ecrire_env(*e);*/}
 C : V Af E { Noeud *fils_gauche = create_noeud(NULL,NULL,$1);
   $$ = create_noeud(fils_gauche, $3, $2);}
   | Sk {$$ = create_noeud(NULL, NULL, $1);}
@@ -60,8 +62,6 @@ int yyerror(char *s){
 }
 
 int main(int argc, char **argv){
-  /*liste l;*/
   yyparse();
-  printf("\nLe programme est correct!\n");
   return 0;
 }
