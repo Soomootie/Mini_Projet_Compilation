@@ -29,7 +29,7 @@ endif
 	@mv $(F).c $@
 	@echo -e "\033[00m"
 
-$(F): $(F).yacc.o $(F).lex.o abiimp.o
+$(F): $(F).yacc.o $(F).lex.o abiimp.o bilquad.o environ.o
 	@echo -e "\033[32;02mCompiling output file:" $^ "\033[00m"
 	@echo -e "\033[32;02mOutput file:" $@ "\033[00m\033[34;01m"
 	@$(CC) -o $@ $^
