@@ -3,14 +3,17 @@
   #include <stdio.h>
   #include <stdlib.h>
   #include <string.h>
-  #include "include/abiimp.h"
-  #include "include/environ.h"
   int yylex();
   int yyerror();
 %}
 
+%code requires {
+  #include "include/abiimp.h"
+  #include "include/environ.h"
+}
+
 %union{
-  struct Noeud * noeud;
+  Noeud * noeud;
   int number;
   char * string;
 }
@@ -52,7 +55,7 @@ T : T Mu F {$$ = create_noeud($1, $3, $2);}
 F : Po E Pf {$$ =$2;}
   | I {char *tmp = malloc(sizeof(char)); sprintf(tmp,"%d",$1);
     $$ = create_noeud(NULL,NULL,tmp);}
-  | V {$$ = create_noeud($$,NULL,$1);}
+  | V {$$ = create_noeud(NULL,NULL,$1);}
   ;
 %%
 
