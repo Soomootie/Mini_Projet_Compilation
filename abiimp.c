@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include "include/environ.h"
+#include "include/bilquad.h"
 #include "include/abiimp.h"
 
 Noeud *create_noeud(Noeud *g, Noeud* d, char *data){
@@ -64,4 +65,60 @@ int env_tree(Noeud *n, ENV *e){
     return atoi(n->data);
   if (valch(*e, n->data) != 0)
     return valch(*e, n->data);
+}
+
+
+void env_c3a(BILQUAD list){
+  ENV env = Envalloc();
+  QUAD elem = list.debut;
+  while (elem != NULL) {
+    /***Afc***/
+    if (!strcmp(elem->OP, "Afc")) {
+      initenv(&env, elem->RES);
+      affect(env, elem->RES, atoi(elem->ARG1));
+      elem = elem->SUIV;
+    }
+    /***Pl Mu Mo***/
+    else if (!strcmp(elem->OP,"Pl") || !strcmp(elem->OP, "Mu") || !strcmp(elem->OP, "Mo")) {
+      initenv(&env, elem->RES);
+      initenv(&env, elem->ARG1);
+      initenv(&env, elem->ARG2);
+      int res = eval(elem->OP, valch(env, elem->ARG1), valch(env, elem->ARG2));
+      affect(env, elem->RES, res);
+      elem = elem->SUIV;
+    }
+    /***Af***/
+    else if (!strcmp(elem->OP, "Af")) {
+      initenv(&env, elem->ARG1);
+      initenv(&env, elem->ARG2);
+      affect(env, elem->ARG1, valch(env, elem->ARG2));
+      elem = elem->SUIV;
+    }
+    /***Jp***/
+    else if (!strcmp(elem->OP, "Jp")) {
+      QUAD listStart = list.debut;
+      char *dest = elem->RES;
+      while (strcmp(listStart->ETIQ,dest) != 0)
+        listStart = listStart->SUIV;
+      elem=listStart;
+    }
+    /***Je***/
+    else if (!strcmp(elem->OP, "Jz")) {
+      QUAD listStart = list.debut;
+      char *dest = elem->RES;
+      if(valch(env, elem->ARG1) == 0){
+        while (strcmp(listStart->ETIQ,dest) != 0){
+          listStart = listStart->SUIV;
+        }
+        elem=listStart;
+      } else {
+        elem = elem->SUIV;
+      }
+    } else if (!strcmp(elem->OP, "St")){
+      break;
+    } else if (!strcmp(elem->OP, "Sk")){
+        elem = elem->SUIV;
+      }
+  }
+    ecrire_env(env);
 }
