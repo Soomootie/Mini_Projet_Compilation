@@ -31,8 +31,12 @@
 %type <noeud> C E T F
 
 %%
-START : C {/*print_tree($1);*//* On affiche l'arbre de syntaxe abstraite. */
-            ENV e = Envalloc(); int err = env_tree($1, &e); ecrire_env(e);
+START : C {BILQUAD qd = bilquad_vide();
+          qd = concatq(qd, l_c3a($1));
+          qd = concatq(qd, creer_bilquad(creer_quad(etiq_fin(), "St", "","","")));
+          ecrire_bilquad(qd);
+  /*print_tree($1);*//* On affiche l'arbre de syntaxe abstraite. */
+            /*ENV e = Envalloc(); int err = env_tree($1, &e); ecrire_env(e);*/
         /*err = affect(*e, $1->gauche->data, 10);err = ecrire_env(*e);*/}
 C : V Af E { Noeud *fils_gauche = create_noeud(NULL,NULL,$1);
   $$ = create_noeud(fils_gauche, $3, $2);}
