@@ -10,12 +10,13 @@ ARG [+]*[-]*[0-9]*
 
 %%
 
+{OP} yylval.string = strdup(yytext); return Op;
+{ET} yylval.string = strdup(yytext); return Et;
+{ARG} yylval.string = strdup(yytext); return Arg;
+{DEST} yylval.string = strdup(yytext); return Dest;
 ":" return Sep;
-{OP} return Op;
-{ET} return Et;
-{ARG} return Arg;
-{DEST} return Dest;
-\n return 1;
+\n return NLINE;
+<<EOF>> return 0;
 . {;}
 
 %%
