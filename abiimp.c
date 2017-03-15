@@ -201,7 +201,6 @@ void env_c3a(BILQUAD list){
       initenv(&env, elem->RES);
       affect(env, elem->RES, atoi(elem->ARG1));
       elem = elem->SUIV;
-      printf("Afc\n");
     }
     /***Pl Mu Mo***/
     else if (!strcmp(elem->OP,"Pl") || !strcmp(elem->OP, "Mu") || !strcmp(elem->OP, "Mo")) {
@@ -211,7 +210,6 @@ void env_c3a(BILQUAD list){
       int res = eval(elem->OP, valch(env, elem->ARG1), valch(env, elem->ARG2));
       affect(env, elem->RES, res);
       elem = elem->SUIV;
-      printf("OP\n");
     }
     /***Af***/
     else if (!strcmp(elem->OP, "Af")) {
@@ -219,7 +217,6 @@ void env_c3a(BILQUAD list){
       initenv(&env, elem->ARG2);
       affect(env, elem->ARG1, valch(env, elem->ARG2));
       elem = elem->SUIV;
-      printf("Af\n");
     }
     /***Jp***/
     else if (!strcmp(elem->OP, "Jp")) {
@@ -228,13 +225,11 @@ void env_c3a(BILQUAD list){
       while (strcmp(listStart->ETIQ,dest) != 0)
         listStart = listStart->SUIV;
       elem=listStart;
-      printf("Jp\n");
     }
     /***Jz***/
     else if (!strcmp(elem->OP, "Jz")) {
       QUAD listStart = list.debut;
       char *dest = elem->RES;
-      printf("Jz\n");
       if(valch(env, elem->ARG1) == 0){
         while (strcmp(listStart->ETIQ,dest) != 0){
           listStart = listStart->SUIV;
