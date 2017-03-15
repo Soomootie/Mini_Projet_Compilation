@@ -2,7 +2,7 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <stdbool.h>
-    #include "include/abiimp.h"
+    #include "include/utils.h"
     int yylex();
     int yyerror();
     bool is_create = false;
@@ -29,7 +29,7 @@
 %%
 
 START : C {ecrire_bilquad($1);
-    env_c3a($1);
+    c3a_y86($1);
       }
 C : Et Sep Op Sep A Sep A Sep D NLINE C
   { QUAD qd = creer_quad($1, $3, $5, $7, $9);

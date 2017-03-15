@@ -55,20 +55,17 @@ int initenv_int(ENV *prho, char *var, int type){
     ENV tmp_suiv = tmp->SUIV;
     if (tmp_suiv != NULL){
       if (type == 2){
-        printf("%s %d\n",var , type );
         while (tmp_suiv->SUIV != NULL){
           tmp = tmp_suiv;
           tmp_suiv = tmp_suiv->SUIV;
         }
       } else if (type == 1){
-        printf("%s %d\n",var , type );
         while (tmp_suiv->SUIV != NULL && tmp_suiv->TYPE <= 1){
           tmp = tmp_suiv;
           tmp_suiv = tmp_suiv->SUIV;
         }
       } else if (type == 0){
-        printf("%s %d\n",var , type );
-        while (tmp_suiv != NULL && tmp_suiv->TYPE <= 0){
+        while (tmp_suiv->SUIV  != NULL && tmp_suiv->TYPE <= 0){
           tmp = tmp->SUIV;
           tmp_suiv = tmp_suiv->SUIV;
         }
@@ -77,10 +74,25 @@ int initenv_int(ENV *prho, char *var, int type){
       newcell->SUIV = tmp_suiv;
       return EXIT_SUCCESS;
     } else {
-      initenv(prho, var);
+      newcell->SUIV=*prho;
+      *prho=newcell;
     }
   return EXIT_SUCCESS;
   }
+}
+
+int trier_env(ENV *prho){
+  int type = (*prho)->TYPE;
+  ENV tmp = *prho;
+  *prho = (*prho)->SUIV;
+  ENV tmp2 = *prho;
+  while (tmp2->SUIV->TYPE != type){
+    tmp2 = tmp2->SUIV;
+  }
+  tmp->SUIV = tmp2->SUIV;
+  tmp2->SUIV = tmp;
+  return EXIT_SUCCESS;
+
 }
 
 /* retourne (arg1 op arg2) */

@@ -13,8 +13,8 @@ struct Noeud{
 };
 /* Initialise un noeud , avec pour data le char *. */
 Noeud *create_noeud(Noeud *, Noeud *, char *);
-/* Affiche l'arbre à partir du noeud. */
-void print_tree(Noeud *);
+/* Affiche l'arbre à partir du noeud dans un fichier. */
+void print_tree(Noeud *, FILE *);
 /* Produit l'environnement imp à partir de l'arbre (noeud). */
 int env_imp(Noeud *, ENV *);
 /* Produit l'environnement c3a à partir d'un bilquad. */
