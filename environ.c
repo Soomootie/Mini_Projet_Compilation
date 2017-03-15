@@ -40,6 +40,49 @@ int initenv(ENV *prho,char *var)
       return(EXIT_SUCCESS);
     }
 }
+
+// trois type , 0, 1, 2
+int initenv_int(ENV *prho, char *var, int type){
+  ENV pos, newcell;
+  pos = rech(var, *prho);
+  if (pos == NULL){
+    newcell = Envalloc();
+    newcell->ID = Idalloc();
+    strcpy(newcell->ID, var);
+    newcell->TYPE = type;
+    newcell->VAL = 0;
+    ENV tmp = *prho;
+    ENV tmp_suiv = tmp->SUIV;
+    if (tmp_suiv != NULL){
+      if (type == 2){
+        printf("%s %d\n",var , type );
+        while (tmp_suiv->SUIV != NULL){
+          tmp = tmp_suiv;
+          tmp_suiv = tmp_suiv->SUIV;
+        }
+      } else if (type == 1){
+        printf("%s %d\n",var , type );
+        while (tmp_suiv->SUIV != NULL && tmp_suiv->TYPE <= 1){
+          tmp = tmp_suiv;
+          tmp_suiv = tmp_suiv->SUIV;
+        }
+      } else if (type == 0){
+        printf("%s %d\n",var , type );
+        while (tmp_suiv != NULL && tmp_suiv->TYPE <= 0){
+          tmp = tmp->SUIV;
+          tmp_suiv = tmp_suiv->SUIV;
+        }
+      }
+      tmp->SUIV = newcell;
+      newcell->SUIV = tmp_suiv;
+      return EXIT_SUCCESS;
+    } else {
+      initenv(prho, var);
+    }
+  return EXIT_SUCCESS;
+  }
+}
+
 /* retourne (arg1 op arg2) */
 int eval(char *op, int arg1, int arg2){
   int tmp_op;

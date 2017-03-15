@@ -192,29 +192,38 @@ char * etiq_fin(){
   return tmp;
 }
 
+void c3a_y86(BILQUAD list){
+  QUAD elem = list.debut;
+  while (elem != NULL){
+
+
+  }
+}
+
+
 void env_c3a(BILQUAD list){
   ENV env = Envalloc();
   QUAD elem = list.debut;
   while (elem != NULL) {
     /***Afc***/
     if (!strcmp(elem->OP, "Afc")) {
-      initenv(&env, elem->RES);
+      initenv_int(&env, elem->RES, 1);
       affect(env, elem->RES, atoi(elem->ARG1));
       elem = elem->SUIV;
     }
     /***Pl Mu Mo***/
     else if (!strcmp(elem->OP,"Pl") || !strcmp(elem->OP, "Mu") || !strcmp(elem->OP, "Mo")) {
-      initenv(&env, elem->RES);
-      initenv(&env, elem->ARG1);
-      initenv(&env, elem->ARG2);
+      initenv_int(&env, elem->RES, 2);
+      initenv_int(&env, elem->ARG1, 0);
+      initenv_int(&env, elem->ARG2, 1);
       int res = eval(elem->OP, valch(env, elem->ARG1), valch(env, elem->ARG2));
       affect(env, elem->RES, res);
       elem = elem->SUIV;
     }
     /***Af***/
     else if (!strcmp(elem->OP, "Af")) {
-      initenv(&env, elem->ARG1);
-      initenv(&env, elem->ARG2);
+      initenv_int(&env, elem->ARG1, 0);
+      initenv_int(&env, elem->ARG2, 2);
       affect(env, elem->ARG1, valch(env, elem->ARG2));
       elem = elem->SUIV;
     }
